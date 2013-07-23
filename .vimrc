@@ -7,7 +7,6 @@ set wildmenu
 
 set mouse=nicr
 set shiftwidth=2
-set cindent
 
 " au VimLeave * :!clear
 " Next Tab
