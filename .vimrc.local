@@ -1,0 +1,12 @@
+colorscheme peaksea
+set background=dark
+
+" au VimLeave * :!clear
+" Next Tab
+nnoremap <silent> <C-Right> :tabnext<CR>
+
+" Previous Tab
+nnoremap <silent> <C-Left> :tabprevious<CR>
+
+" New Tab
+nnoremap <silent> <C-t> :tabnew<CR>
