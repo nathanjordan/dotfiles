@@ -1,5 +1,6 @@
 colorscheme peaksea
 set background=dark
+set colorcolumn=80
 
 " au VimLeave * :!clear
 " Next Tab
