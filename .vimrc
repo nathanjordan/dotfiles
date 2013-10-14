@@ -5,6 +5,8 @@ syntax on
 set wildmode=longest,list
 set wildmenu
 
+set colorcolumn=80
+
 set mouse=nicr
 set shiftwidth=2
 
