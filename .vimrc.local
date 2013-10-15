@@ -1,6 +1,7 @@
 colorscheme peaksea
 set background=dark
 set colorcolumn=80
+let mapleader=","
 
 " au VimLeave * :!clear
 " Next Tab
