@@ -2,6 +2,7 @@ colorscheme peaksea
 set background=dark
 set colorcolumn=80
 let mapleader=","
+let NERDTreeQuitOnOpen=0
 
 " au VimLeave * :!clear
 " Next Tab
