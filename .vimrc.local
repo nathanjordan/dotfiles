@@ -1,15 +1,33 @@
-colorscheme peaksea
+syntax enable
 set background=dark
-set colorcolumn=80
+" solarized options
+colorscheme solarized
+hi ColorColumn ctermbg=0
 let mapleader=","
 let NERDTreeQuitOnOpen=0
+hi CursorLine ctermbg=8 cterm=none
+hi LineNr ctermbg=0
+hi Visual ctermbg=0 ctermfg=7
+hi Folded cterm=none ctermbg=0 ctermfg=239
+hi TabLine cterm=none ctermbg=0 ctermfg=244
+hi TabLineSel cterm=none ctermbg=0 ctermfg=7
+hi TabLineFill cterm=none ctermbg=0 ctermfg=239
+hi VertSplit ctermfg=0 ctermbg=0
+hi IndentGuidesEven ctermbg=0
+hi EasyMotionTarget ctermbg=8 ctermfg=1
+hi EasyMotionTarget2First ctermbg=8 ctermfg=7
+hi EasyMotionTarget2Second ctermbg=8 ctermfg=7
+hi EasyMotionShade ctermbg=8 ctermfg=239
+hi clear SpellBad
+hi SpellBad cterm=underline
+set laststatus=0
+" end solarized stuff
 
-" au VimLeave * :!clear
-" Next Tab
+" " Next Tab
 nnoremap <silent> <C-Right> :tabnext<CR>
-
-" Previous Tab
+"
+" " Previous Tab
 nnoremap <silent> <C-Left> :tabprevious<CR>
-
-" New Tab
+"
+" " New Tab
 nnoremap <silent> <C-t> :tabnew<CR>
