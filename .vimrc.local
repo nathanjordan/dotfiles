@@ -2,26 +2,31 @@ syntax enable
 set background=dark
 " solarized options
 colorscheme solarized
-hi ColorColumn ctermbg=0
+hi ColorColumn ctermbg=none
+set cc=80
 let mapleader=","
 let NERDTreeQuitOnOpen=0
-hi CursorLine ctermbg=8 cterm=none
-hi LineNr ctermbg=0
+hi CursorLine ctermbg=0 cterm=none
+hi LineNr ctermbg=8 ctermfg=236
 hi Visual ctermbg=0 ctermfg=7
 hi Folded cterm=none ctermbg=0 ctermfg=239
 hi TabLine cterm=none ctermbg=0 ctermfg=244
 hi TabLineSel cterm=none ctermbg=0 ctermfg=7
 hi TabLineFill cterm=none ctermbg=0 ctermfg=239
-hi VertSplit ctermfg=0 ctermbg=0
-hi IndentGuidesEven ctermbg=0
+hi VertSplit ctermfg=0 ctermbg=none
+hi Split ctermfg=none ctermbg=none
 hi EasyMotionTarget ctermbg=8 ctermfg=1
 hi EasyMotionTarget2First ctermbg=8 ctermfg=7
 hi EasyMotionTarget2Second ctermbg=8 ctermfg=7
 hi EasyMotionShade ctermbg=8 ctermfg=239
+hi DiffAdd ctermbg=8
+hi DiffChange ctermbg=8
+hi DiffDelete ctermbg=8
 hi clear SpellBad
 hi SpellBad cterm=underline
 set laststatus=0
-" end solarized stuff
+autocmd VimEnter,BufEnter,Colorscheme * :hi IndentGuidesEven ctermbg=0
+autocmd VimEnter,BufEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=0
 
 " " Next Tab
 nnoremap <silent> <C-Right> :tabnext<CR>
