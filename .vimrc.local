@@ -24,9 +24,11 @@ hi DiffChange ctermbg=8
 hi DiffDelete ctermbg=8
 hi clear SpellBad
 hi SpellBad cterm=underline
+hi SignColumn ctermbg=none
 set laststatus=0
-autocmd VimEnter,BufEnter,Colorscheme * :hi IndentGuidesEven ctermbg=0
-autocmd VimEnter,BufEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=0
+"autocmd VimEnter,BufEnter,Colorscheme * :hi IndentGuidesEven ctermbg=0
+"autocmd VimEnter,BufEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=0
+let g:indent_guides_auto_colors = 1
 
 " " Next Tab
 nnoremap <silent> <C-Right> :tabnext<CR>
