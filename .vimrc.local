@@ -26,9 +26,14 @@ hi clear SpellBad
 hi SpellBad cterm=underline
 hi SignColumn ctermbg=none
 set laststatus=0
+hi IndentGuidesEven ctermbg=0
+hi IndentGuidesOdd ctermbg=0
 "autocmd VimEnter,BufEnter,Colorscheme * :hi IndentGuidesEven ctermbg=0
 "autocmd VimEnter,BufEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=0
-let g:indent_guides_auto_colors = 1
+" Theres a bug in spf13vim that doesn't load the IndentGuides color right
+" Loading the file again fixes the issue
+autocmd BufEnter * :source ~/.vimrc.local
+"let g:indent_guides_auto_colors = 1
 
 " " Next Tab
 nnoremap <silent> <C-Right> :tabnext<CR>
