@@ -29,7 +29,7 @@ Plugin 'scrooloose/syntastic.git'  " syntax checking
 Plugin 'airblade/vim-gitgutter'  " git status in the gutter
 Plugin 'scrooloose/nerdtree'  " file explorer
 Plugin 'majutsushi/tagbar'  " ctag browsing
-"Plugin 'Valloric/YouCompleteMe'  " autocompletions
+Plugin 'Valloric/YouCompleteMe'  " autocompletions
 Plugin 'tpope/vim-surround'  " surround text with things
 Plugin 'fatih/vim-go'  " go tooling support
 Plugin 'pangloss/vim-javascript'  " javascript
@@ -51,7 +51,15 @@ Plugin 'hynek/vim-python-pep8-indent'  " better python indenting
 Plugin 'wakatime/vim-wakatime'  " time management
 Plugin 'szw/vim-tags'  " code tags (function names, classes, etc.) browsing
 Plugin 'python-rope/ropevim'  " python refactoring/references/completion
-
+Plugin 'dkprice/vim-easygrep'  " Grep across files
+Plugin 'Shougo/vimproc'  " Shell in the VIM!
+Plugin 'Shougo/vimshell.vim'  " Shell in the VIM!
+Plugin 'eagletmt/ghcmod-vim'  " haskell goodness?
+Plugin 'SirVer/ultisnips' " snippet engine
+Plugin 'honza/vim-snippets' " meta snippet thing?
+Plugin 'rking/ag.vim' " plugin for search tool ag
+Plugin 'alfredodeza/coveragepy.vim' " python coverage tool
+Plugin 'othree/eregex.vim' " pcre regex standardizer
 
 " ------------------------------------------------------------------------------------------------
 
@@ -90,11 +98,19 @@ set number
 set backspace=2
 
 " autoset the CWD to the current directory
-set autochdir
+"set autochdir  " This was broken in vimshell
+autocmd BufEnter * silent! lcd %:p:h
+
+" configure snippets
+let g:UltiSnipsExpandTrigger="<c-o>"
+let g:UltiSnipsListSnippets="<c-y>"
 
 " renmap for ctrlp-funky
 nnoremap <Leader>fu :CtrlPFunky<Cr>
 let g:ctrlp_funky_syntax_highlight = 1
+
+" Configuring CtrlP to ignore git ignored files
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 " theme
 set background=dark
@@ -105,8 +121,29 @@ set laststatus=2
 let g:airline_theme='solarized'
 let g:airline_powerline_fonts = 1
 
-" strip whitespace
+" markdown config
+let g:vim_markdown_folding_disabled = 1
+
+" use ag at the project root instead of CWD
+let g:ag_working_path_mode="r"
+
+" vim-go config
+let g:go_fmt_command = "goimports"
+let g:syntastic_go_checkers = ['go', 'golint', 'govet', 'errcheck']
+"let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+"let g:go_metalinter_autosave = 1
+
+" strip whitespace on save
 autocmd BufWritePre * StripWhitespace
+
+" yaml config
+autocmd FileType yaml setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
+
+" json config
+autocmd FileType json setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
+
+" thrift config
+autocmd FileType thrift setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
 
 " ctrlp config
 let g:ctrlp_reuse_window  = 'startify'
@@ -124,15 +161,25 @@ set cc=100
 " for wrapping, etc
 set textwidth=100
 
+" for VimShell
+nnoremap <Leader>vs :VimShell -split<CR>
+
 " turn off arrow keys (old habits die hard)
-"noremap <Up> <NOP>
-"noremap <Down> <NOP>
-"noremap <Left> <NOP>
-"noremap <Right> <NOP>
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
+
+" Allow using the repeat operator with a visual selection (!)
+" http://stackoverflow.com/a/8064607/127816
+vnoremap . :normal .<CR>
 
 " visual shifting retain selection
 vnoremap > >gv
 vnoremap < <gv
+
+" allow visual block mode to exit even outside character space
+set virtualedit=block
 
 " save and quit capitals
 command! -bang -nargs=* -complete=file E e<bang> <args>
@@ -145,9 +192,16 @@ command! -bang Q q<bang>
 command! -bang QA qa<bang>
 command! -bang Qa qa<bang>
 
+" insert go-spew import for debugging
+command! Spew py import vim; vim.command(":normal o<Tab>\"github.com/davecgh/go-spew/spew\"")
+
+" insert UUID after cursor
+command! UUID py import uuid, vim; vim.command(":normal a" + str(uuid.uuid4()))
+nnoremap <Leader>u :UUID<CR>
+
 " tab configuration
-nnoremap <silent> <C-Right> :tabnext<CR>
-nnoremap <silent> <C-Left> :tabprevious<CR>
+nnoremap <silent> <C-l> :tabnext<CR>
+nnoremap <silent> <C-h> :tabprevious<CR>
 nnoremap <silent> <C-t> :tabnew<CR>
 
 " Easy motion config
