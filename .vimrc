@@ -52,14 +52,20 @@ Plugin 'wakatime/vim-wakatime'  " time management
 Plugin 'szw/vim-tags'  " code tags (function names, classes, etc.) browsing
 Plugin 'python-rope/ropevim'  " python refactoring/references/completion
 Plugin 'dkprice/vim-easygrep'  " Grep across files
-Plugin 'Shougo/vimproc'  " Shell in the VIM!
-Plugin 'Shougo/vimshell.vim'  " Shell in the VIM!
+"Plugin 'Shougo/vimproc'  " Shell in the VIM!
+"Plugin 'Shougo/vimshell.vim'  " Shell in the VIM!
 Plugin 'eagletmt/ghcmod-vim'  " haskell goodness?
 Plugin 'SirVer/ultisnips' " snippet engine
 Plugin 'honza/vim-snippets' " meta snippet thing?
 Plugin 'rking/ag.vim' " plugin for search tool ag
 Plugin 'alfredodeza/coveragepy.vim' " python coverage tool
 Plugin 'othree/eregex.vim' " pcre regex standardizer
+
+" only load these plugins if we're using neovim
+if has("nvim")
+	Plugin 'jodosha/vim-godebug' " go debugging
+	Plugin 'vimlab/split-term.vim' " better terminal keybindings for :terminal
+endif
 
 " ------------------------------------------------------------------------------------------------
 
@@ -83,7 +89,7 @@ set hlsearch
 syntax enable
 
 " no escape sequences after ESC is pressed
-set noesckeys
+"set noesckeys
 
 " ruler
 set ruler
@@ -128,10 +134,14 @@ let g:vim_markdown_folding_disabled = 1
 let g:ag_working_path_mode="r"
 
 " vim-go config
+let g:go_info_mode = 'guru'
 let g:go_fmt_command = "goimports"
 let g:syntastic_go_checkers = ['go', 'golint', 'govet', 'errcheck']
 "let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 "let g:go_metalinter_autosave = 1
+if has("nvim")
+	exe "sign define gobreakpoint text=@  texthl=ErrorMsg"
+end
 
 " strip whitespace on save
 autocmd BufWritePre * StripWhitespace
@@ -139,11 +149,17 @@ autocmd BufWritePre * StripWhitespace
 " yaml config
 autocmd FileType yaml setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
 
+" html config
+autocmd FileType html setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
+
 " json config
 autocmd FileType json setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
 
 " thrift config
 autocmd FileType thrift setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
+
+" vimscript config
+autocmd FileType vim setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
 
 " ctrlp config
 let g:ctrlp_reuse_window  = 'startify'
@@ -191,9 +207,6 @@ command! -bang WA wa<bang>
 command! -bang Q q<bang>
 command! -bang QA qa<bang>
 command! -bang Qa qa<bang>
-
-" insert go-spew import for debugging
-command! Spew py import vim; vim.command(":normal o<Tab>\"github.com/davecgh/go-spew/spew\"")
 
 " insert UUID after cursor
 command! UUID py import uuid, vim; vim.command(":normal a" + str(uuid.uuid4()))
