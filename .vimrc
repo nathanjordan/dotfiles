@@ -19,16 +19,16 @@ Plugin 'tpope/vim-sensible'  " sensible defaults
 Plugin 'tpope/vim-git'  " git syntax highlighting and things
 Plugin 'tpope/vim-fugitive'  " git integration
 Plugin 'easymotion/vim-easymotion'  " helps moving around
-Plugin 'vim-airline/vim-airline'  " status bar thing
-Plugin 'vim-airline/vim-airline-themes'  " themes for status bar
-Plugin 'ctrlpvim/ctrlp.vim'  " easy file opening
+Plugin 'itchyny/lightline.vim'  " status bar
+"Plugin 'ctrlpvim/ctrlp.vim'  " easy file opening
+Plugin 'junegunn/fzf.vim'  " easy file opening
 Plugin 'altercation/vim-colors-solarized'  " solarized themes
 Plugin 'nathanaelkane/vim-indent-guides' " indent guides for python
 Plugin 'scrooloose/nerdcommenter'  " commenting goodness
 Plugin 'scrooloose/syntastic.git'  " syntax checking
 Plugin 'airblade/vim-gitgutter'  " git status in the gutter
 Plugin 'scrooloose/nerdtree'  " file explorer
-Plugin 'majutsushi/tagbar'  " ctag browsing
+"Plugin 'majutsushi/tagbar'  " ctag browsing
 Plugin 'Valloric/YouCompleteMe'  " autocompletions
 Plugin 'tpope/vim-surround'  " surround text with things
 Plugin 'fatih/vim-go'  " go tooling support
@@ -43,7 +43,7 @@ Plugin 'mxw/vim-jsx'  " react jsx
 Plugin 'junegunn/vim-easy-align'  " align things
 Plugin 'rust-lang/rust.vim'  " rust
 Plugin 'mhinz/vim-startify'  " fancy start screen
-Plugin 'tacahiroy/ctrlp-funky'  " function entries in ctrlp
+"Plugin 'tacahiroy/ctrlp-funky'  " function entries in ctrlp
 Plugin 'terryma/vim-expand-region'  " expand/contract text selection
 Plugin 'solarnz/thrift.vim'  " thrift support
 Plugin 'ntpeters/vim-better-whitespace'  " whitespace hilighting/removing
@@ -122,10 +122,16 @@ let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclu
 set background=dark
 colorscheme solarized
 
-" airline config
+" lightline config
 set laststatus=2
-let g:airline_theme='solarized'
-let g:airline_powerline_fonts = 1
+let g:lightline = {
+      \ 'colorscheme': 'solarized',
+      \ 'active': {
+      \   'right': [ [ 'lineinfo' ],
+      \              [ 'percent' ] ]
+      \   },
+      \ }
+set noshowmode
 
 " markdown config
 let g:vim_markdown_folding_disabled = 1
@@ -217,7 +223,7 @@ nnoremap <silent> <C-l> :tabnext<CR>
 nnoremap <silent> <C-h> :tabprevious<CR>
 nnoremap <silent> <C-t> :tabnew<CR>
 
-" Easy motion config
+" color adjustments
 hi LineNr ctermbg=8 ctermfg=236
 hi EasyMotionTarget ctermbg=8 ctermfg=1
 hi EasyMotionTarget2First ctermbg=8 ctermfg=7
