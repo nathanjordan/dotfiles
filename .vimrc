@@ -20,7 +20,6 @@ Plugin 'tpope/vim-git'  " git syntax highlighting and things
 Plugin 'tpope/vim-fugitive'  " git integration
 Plugin 'easymotion/vim-easymotion'  " helps moving around
 Plugin 'itchyny/lightline.vim'  " status bar
-"Plugin 'ctrlpvim/ctrlp.vim'  " easy file opening
 Plugin 'junegunn/fzf.vim'  " easy file opening
 Plugin 'altercation/vim-colors-solarized'  " solarized themes
 Plugin 'nathanaelkane/vim-indent-guides' " indent guides for python
@@ -28,7 +27,6 @@ Plugin 'scrooloose/nerdcommenter'  " commenting goodness
 Plugin 'scrooloose/syntastic.git'  " syntax checking
 Plugin 'airblade/vim-gitgutter'  " git status in the gutter
 Plugin 'scrooloose/nerdtree'  " file explorer
-"Plugin 'majutsushi/tagbar'  " ctag browsing
 Plugin 'Valloric/YouCompleteMe'  " autocompletions
 Plugin 'tpope/vim-surround'  " surround text with things
 Plugin 'fatih/vim-go'  " go tooling support
@@ -39,11 +37,9 @@ Plugin 'plasticboy/vim-markdown'  " markdown
 Plugin 'othree/html5.vim'  " html
 Plugin 'elzr/vim-json'  " json
 Plugin 'mxw/vim-jsx'  " react jsx
-"Plugin 'Townk/vim-autoclose'  " autoclose parens/quotes/brackets
 Plugin 'junegunn/vim-easy-align'  " align things
 Plugin 'rust-lang/rust.vim'  " rust
 Plugin 'mhinz/vim-startify'  " fancy start screen
-"Plugin 'tacahiroy/ctrlp-funky'  " function entries in ctrlp
 Plugin 'terryma/vim-expand-region'  " expand/contract text selection
 Plugin 'solarnz/thrift.vim'  " thrift support
 Plugin 'ntpeters/vim-better-whitespace'  " whitespace hilighting/removing
@@ -52,14 +48,18 @@ Plugin 'wakatime/vim-wakatime'  " time management
 Plugin 'szw/vim-tags'  " code tags (function names, classes, etc.) browsing
 Plugin 'python-rope/ropevim'  " python refactoring/references/completion
 Plugin 'dkprice/vim-easygrep'  " Grep across files
-"Plugin 'Shougo/vimproc'  " Shell in the VIM!
-"Plugin 'Shougo/vimshell.vim'  " Shell in the VIM!
 Plugin 'eagletmt/ghcmod-vim'  " haskell goodness?
 Plugin 'SirVer/ultisnips' " snippet engine
 Plugin 'honza/vim-snippets' " meta snippet thing?
 Plugin 'rking/ag.vim' " plugin for search tool ag
 Plugin 'alfredodeza/coveragepy.vim' " python coverage tool
 Plugin 'othree/eregex.vim' " pcre regex standardizer
+"Plugin 'majutsushi/tagbar'  " ctag browsing
+"Plugin 'ctrlpvim/ctrlp.vim'  " easy file opening
+"Plugin 'Townk/vim-autoclose'  " autoclose parens/quotes/brackets
+"Plugin 'tacahiroy/ctrlp-funky'  " function entries in ctrlp
+"Plugin 'Shougo/vimproc'  " Shell in the VIM!
+"Plugin 'Shougo/vimshell.vim'  " Shell in the VIM!
 
 
 " only load these plugins if we're using neovim
@@ -118,11 +118,14 @@ colorscheme solarized
 
 " lightline config
 set laststatus=2
+set noshowmode " hide old mode name in bottom left
 let g:lightline = {
       \ 'colorscheme': 'solarized',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+      \             [ 'readonly', 'filename', 'modified' ],
+      \             [ 'gitbranch' ],
+      \   ],
       \   'right': [ [ 'lineinfo' ],
       \              [ 'percent' ],
       \              [ 'syntastic' ],
@@ -138,7 +141,6 @@ let g:lightline = {
       \   'syntastic': 'error',
       \ },
       \ }
-set noshowmode
 
 " markdown config
 let g:vim_markdown_folding_disabled = 1
@@ -156,39 +158,13 @@ if has("nvim")
 	exe "sign define gobreakpoint text=@  texthl=ErrorMsg"
 end
 
-" ctrlp config
-"
-" configuring CtrlP to ignore git ignored files
-"let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
-"let g:ctrlp_reuse_window  = 'startify'
-"let g:ctrlp_custom_ignore = {
-                "\ 'dir':  '\.git$\|\.hg$\|\.svn$\|\env/$',
-                "\ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
-" renmap for ctrlp-funky
-"nnoremap <Leader>fu :CtrlPFunky<Cr>
-"let g:ctrlp_funky_syntax_highlight = 1
-
-
 " fzf config
 set rtp+=/usr/local/opt/fzf
-nnoremap <C-p> :Files<CR>
+nnoremap <C-p> :GitFiles<CR>
 let g:fzf_layout = { 'down': '~30%' }
-" customize fzf colors to match your color scheme
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
-
+autocmd! FileType fzf " hide annoying fzf status line
+autocmd  FileType fzf set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
 " strip whitespace on save
 autocmd BufWritePre * StripWhitespace
