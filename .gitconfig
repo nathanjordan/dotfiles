@@ -24,7 +24,7 @@
   recent-branches = !git for-each-ref --count=5 --sort=-committerdate refs/heads/ --format='%(refname:short)'
 
   # branch
-  b = branch -v                     # branch (verbose)
+  b = !git --no-pager branch -v     # branch (verbose)
 
   # commit
   c = commit -m                     # commit with message
@@ -46,7 +46,7 @@
   last = diff HEAD^                 # diff last committed change
 
   # log
-  l = log --graph --date=short
+  l = !git --no-pager log --graph --date=short -n 20
   changes = log --pretty=format:\"%h %cr %cn %Cgreen%s%Creset\" --name-status
   short = log --pretty=format:\"%h %cr %cn %Cgreen%s%Creset\"
   simple = log --pretty=format:\" * %s\"
@@ -89,9 +89,7 @@
   svnr = svn rebase
   svnd = svn dcommit
   svnl = svn log --oneline --show-commit
-  
-  # stupid fix for typing stuff like `git git status`
-  git = !exec git
+	git = !exec git
 [format]
   pretty = format:%C(blue)%ad%Creset %C(yellow)%h%C(green)%d%Creset %C(blue)%s %C(magenta) [%an]%Creset
 [mergetool]
@@ -110,7 +108,7 @@
 [push]
   # 'git push' will push the current branch to its tracking branch
   # the usual default is to push all branches
-  default = tracking
+	default = current
 [core]
   autocrlf = false
   editor = vim
@@ -132,3 +130,17 @@
 [user]
 	email = nathan@uber.com
 	name = Nathan Jordan
+[url "ssh://git@github.com/uber/"]
+	insteadOf = https://github.com/uber/
+[url "ssh://gitolite@code.uber.internal/"]
+	insteadOf = git://code.uber.internal/
+[url "ssh://gitolite@code.uber.internal:2222/"]
+	insteadOf = https://code.uber.internal/
+[url "ssh://config.uber.internal/"]
+	insteadOf = https://config.uber.internal/
+[http "https://gopkg.in"]
+	followRedirects = true
+[http "https://gopkg.uberinternal.com"]
+	followRedirects = true
+[url "ssh://code.uber.internal/"]
+	insteadOf = https://code.uber.internal/
