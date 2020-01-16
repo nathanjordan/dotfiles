@@ -15,6 +15,18 @@ Plugin 'VundleVim/Vundle.vim'
 
 " ------------------------------------------------------------------------------------------------
 
+" Language support
+Plugin 'fatih/vim-go'  " go tooling support
+Plugin 'plasticboy/vim-markdown'  " markdown
+Plugin 'pangloss/vim-javascript'  " javascript
+Plugin 'othree/html5.vim'  " html
+Plugin 'elzr/vim-json'  " json
+Plugin 'mxw/vim-jsx'  " react jsx
+Plugin 'eagletmt/ghcmod-vim'  " haskell goodness?
+Plugin 'rust-lang/rust.vim'  " rust
+Plugin 'solarnz/thrift.vim'  " thrift support
+
+" Other
 Plugin 'tpope/vim-sensible'  " sensible defaults
 Plugin 'tpope/vim-git'  " git syntax highlighting and things
 Plugin 'tpope/vim-fugitive'  " git integration
@@ -24,36 +36,30 @@ Plugin 'junegunn/fzf.vim'  " easy file opening
 Plugin 'altercation/vim-colors-solarized'  " solarized themes
 Plugin 'nathanaelkane/vim-indent-guides' " indent guides for python
 Plugin 'scrooloose/nerdcommenter'  " commenting goodness
-Plugin 'scrooloose/syntastic.git'  " syntax checking
 Plugin 'airblade/vim-gitgutter'  " git status in the gutter
 Plugin 'scrooloose/nerdtree'  " file explorer
 Plugin 'Valloric/YouCompleteMe'  " autocompletions
+"Plugin 'Shougo/deoplete.nvim'  " autocompletions
+"Plugin 'deoplete-plugins/deoplete-go' " deoplete for go?
 Plugin 'tpope/vim-surround'  " surround text with things
-Plugin 'fatih/vim-go'  " go tooling support
-Plugin 'pangloss/vim-javascript'  " javascript
 Plugin 'tpope/vim-abolish'  " substitutions/refactoring/renaming/silly typos/etc
 Plugin 'terryma/vim-multiple-cursors' " multiple cursors!
-Plugin 'plasticboy/vim-markdown'  " markdown
-Plugin 'othree/html5.vim'  " html
-Plugin 'elzr/vim-json'  " json
-Plugin 'mxw/vim-jsx'  " react jsx
 Plugin 'junegunn/vim-easy-align'  " align things
-Plugin 'rust-lang/rust.vim'  " rust
 Plugin 'mhinz/vim-startify'  " fancy start screen
 Plugin 'terryma/vim-expand-region'  " expand/contract text selection
-Plugin 'solarnz/thrift.vim'  " thrift support
 Plugin 'ntpeters/vim-better-whitespace'  " whitespace hilighting/removing
 Plugin 'hynek/vim-python-pep8-indent'  " better python indenting
 Plugin 'wakatime/vim-wakatime'  " time management
 Plugin 'szw/vim-tags'  " code tags (function names, classes, etc.) browsing
 Plugin 'python-rope/ropevim'  " python refactoring/references/completion
 Plugin 'dkprice/vim-easygrep'  " Grep across files
-Plugin 'eagletmt/ghcmod-vim'  " haskell goodness?
 Plugin 'SirVer/ultisnips' " snippet engine
 Plugin 'honza/vim-snippets' " meta snippet thing?
 Plugin 'rking/ag.vim' " plugin for search tool ag
 Plugin 'alfredodeza/coveragepy.vim' " python coverage tool
 Plugin 'othree/eregex.vim' " pcre regex standardizer
+Plugin 'liuchengxu/vim-which-key' " key hints menu
+"Plugin 'bazelbuild/vim-bazel' " bazel support
 "Plugin 'majutsushi/tagbar'  " ctag browsing
 "Plugin 'ctrlpvim/ctrlp.vim'  " easy file opening
 "Plugin 'Townk/vim-autoclose'  " autoclose parens/quotes/brackets
@@ -61,11 +67,13 @@ Plugin 'othree/eregex.vim' " pcre regex standardizer
 "Plugin 'Shougo/vimproc'  " Shell in the VIM!
 "Plugin 'Shougo/vimshell.vim'  " Shell in the VIM!
 
-
 " only load these plugins if we're using neovim
 if has("nvim")
 	Plugin 'jodosha/vim-godebug' " go debugging
 	Plugin 'vimlab/split-term.vim' " better terminal keybindings for :terminal
+  Plugin 'dense-analysis/ale' "syntax checking
+else
+  Plugin 'scrooloose/syntastic.git'  " syntax checking
 endif
 
 " ------------------------------------------------------------------------------------------------
@@ -110,7 +118,7 @@ autocmd BufEnter * silent! lcd %:p:h
 
 " configure snippets
 let g:UltiSnipsExpandTrigger="<c-o>"
-let g:UltiSnipsListSnippets="<c-y>"
+"let g:UltiSnipsListSnippets="<c-tab>"
 
 " theme
 set background=dark
@@ -142,6 +150,17 @@ let g:lightline = {
       \ },
       \ }
 
+" syntastic config
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" ale config
+let g:ale_linters = {
+\   'go': ['gopls'],
+\}
+
 " markdown config
 let g:vim_markdown_folding_disabled = 1
 
@@ -149,14 +168,30 @@ let g:vim_markdown_folding_disabled = 1
 let g:ag_working_path_mode="r"
 
 " vim-go config
-let g:go_info_mode = 'guru'
+let g:go_fmt_fail_silently = 1
 let g:go_fmt_command = "goimports"
-let g:syntastic_go_checkers = ['go', 'golint', 'govet', 'errcheck']
-"let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 "let g:go_metalinter_autosave = 1
+let g:go_decls_mode = 'fzf'
+let g:syntastic_go_checkers = [] " ['go', 'golint', 'govet']
+"let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+let g:go_list_type = "quickfix"
 if has("nvim")
 	exe "sign define gobreakpoint text=@  texthl=ErrorMsg"
 end
+
+"autocmd BufRead /home/martin/go/src/*.go
+      "\  let s:tmp = matchlist(expand('%:p'),
+          "\ '/home/martin/go/src/\code.uber.internal/[^/]\+\)')
+      "\| if len(s:tmp) > 1 |  exe 'silent :GoGuruScope ' . s:tmp[1] | endif
+      "\| unlet s:tmp
+
+" YouCompleteMe (ycm) options
+let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
+
+" Deoplete options
+let g:deoplete#enable_at_startup = 1
+" use tab to cycle through options tab-complete
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
 " fzf config
 set rtp+=/usr/local/opt/fzf
@@ -169,20 +204,14 @@ autocmd  FileType fzf set laststatus=0 noshowmode noruler
 " strip whitespace on save
 autocmd BufWritePre * StripWhitespace
 
-" yaml config
+" language configs
 autocmd FileType yaml setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
-
-" html config
 autocmd FileType html setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
-
-" json config
+autocmd FileType xml setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
 autocmd FileType json setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
-
-" thrift config
 autocmd FileType thrift setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
-
-" vimscript config
 autocmd FileType vim setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
+autocmd FileType proto setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
 
 " ctrlp config
 " mappings
