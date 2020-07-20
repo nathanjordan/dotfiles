@@ -1,0 +1,48 @@
+# column wrapping
+vmap gq :action com.andrewbrookins.idea.wrap.WrapAction<CR>
+
+# surround with parentheses
+set surround
+
+# emulates easymotion
+set easymotion
+
+# commenting
+set commentary
+
+" use osx clipboard
+set clipboard=unnamed
+
+" searching
+set incsearch
+set hlsearch
+
+" language configs
+autocmd FileType yaml setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
+autocmd FileType html setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
+autocmd FileType xml setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
+autocmd FileType json setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
+autocmd FileType thrift setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
+autocmd FileType vim setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
+autocmd FileType proto setlocal tabstop=2 shiftwidth=2 expandtab noautoindent
+
+# change leader key to ,
+let mapleader = ","
+
+" for wrapping, etc
+set textwidth=100
+
+" Allow using the repeat operator with a visual selection (!)
+" http://stackoverflow.com/a/8064607/127816
+vnoremap . :normal .<CR>
+
+" visual shifting retain selection
+vnoremap > >gv
+vnoremap < <gv
+
+" comment with <Leader>cc
+vmap <Leader>cc gcc
+
+
+" allow visual block mode to exit even outside character space
+set virtualedit=block
